@@ -37,8 +37,16 @@ fun AddScreen(navController: NavHostController) {
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(vertical = 8.dp)
             )
-            OutlinedTextField(value = title, onValueChange = {title = it}, label = { Text(text = "Note title")})
-            OutlinedTextField(value = subtitle, onValueChange = {subtitle = it}, label = { Text(text = "Note subtitle")})
+            OutlinedTextField(
+                value = title,
+                onValueChange = {title = it},
+                label = { Text(text = "Note title")}
+            )
+            OutlinedTextField(
+                value = subtitle,
+                onValueChange = {subtitle = it},
+                label = { Text(text = "Note subtitle")}
+            )
             Button(
                 modifier = Modifier.padding(top = 16.dp),
                 onClick = { navController.navigate(NavRoute.Main.route) }
