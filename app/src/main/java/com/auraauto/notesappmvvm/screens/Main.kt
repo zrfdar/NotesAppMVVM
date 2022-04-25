@@ -34,7 +34,6 @@ import com.auraauto.notesappmvvm.ui.theme.NotesAppMVVMTheme
 fun MainScreen(navController: NavHostController) {
     val context = LocalContext.current
     val mViewModel: MainViewModel = viewModel(factory = MainViewModelFactory(context.applicationContext as Application))
-    val notes = mViewModel.readTest.observeAsState(listOf()).value
 
     Scaffold(floatingActionButton = {
         FloatingActionButton(
@@ -49,10 +48,10 @@ fun MainScreen(navController: NavHostController) {
             NoteItem(title = "Note 2", subtitle = "Subtitle for note 2", navController = navController)
             NoteItem(title = "Note 3", subtitle = "Subtitle for note 3", navController = navController)
             NoteItem(title = "Note 4", subtitle = "Subtitle for note 4", navController = navController)
-        }*/
+        }
         LazyColumn{
             items(notes) { note -> NoteItem(note = note, navController = navController)}
-        }
+        }*/
     }
 }
 
