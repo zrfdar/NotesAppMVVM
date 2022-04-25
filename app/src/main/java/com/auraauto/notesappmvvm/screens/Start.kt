@@ -18,6 +18,9 @@ import com.auraauto.notesappmvvm.MainViewModel
 import com.auraauto.notesappmvvm.MainViewModelFactory
 import com.auraauto.notesappmvvm.navigation.NavRoute
 import com.auraauto.notesappmvvm.ui.theme.NotesAppMVVMTheme
+import com.auraauto.notesappmvvm.utils.Constants
+import com.auraauto.notesappmvvm.utils.Constants.Keys.FIREBASE_DATABASE
+import com.auraauto.notesappmvvm.utils.Constants.Keys.ROOM_DATABASE
 import com.auraauto.notesappmvvm.utils.TYPE_FIREBASE
 import com.auraauto.notesappmvvm.utils.TYPE_ROOM
 
@@ -34,7 +37,7 @@ fun StartScreen(navController: NavHostController, viewModel: MainViewModel) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text(text = "What we will use?")
+            Text(text = Constants.Keys.WHAT_WE_WILL_USE)
             Button(
                 onClick = {
                     mViewModel.initDatabase(TYPE_ROOM){
@@ -45,7 +48,7 @@ fun StartScreen(navController: NavHostController, viewModel: MainViewModel) {
                     .width(200.dp)
                     .padding(8.dp)
             ) {
-                Text(text = "Room database")
+                Text(text = ROOM_DATABASE)
             }
             Button(
                 onClick = {
@@ -57,7 +60,7 @@ fun StartScreen(navController: NavHostController, viewModel: MainViewModel) {
                     .width(200.dp)
                     .padding(8.dp)
             ) {
-                Text(text = "Firebase database")
+                Text(text = FIREBASE_DATABASE)
             }
         }
     }
