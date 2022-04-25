@@ -2,16 +2,15 @@ package com.auraauto.notesappmvvm
 
 import android.app.Application
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.*
 import com.auraauto.notesappmvvm.database.room.dao.AppRoomDatabase
 import com.auraauto.notesappmvvm.database.room.dao.repository.RoomRepository
 import com.auraauto.notesappmvvm.model.Note
 import com.auraauto.notesappmvvm.utils.REPOSITORY
 import com.auraauto.notesappmvvm.utils.TYPE_FIREBASE
 import com.auraauto.notesappmvvm.utils.TYPE_ROOM
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.lang.IllegalArgumentException
 
 class MainViewModel(application: Application): AndroidViewModel(application) {
@@ -27,6 +26,17 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
             }
         }
     }
+    fun addNote(note: Note, onSuccess: () -> Unit){
+        viewModelScope.launch(Dispatchers.IO) {
+            REPOSITORY.create(note = note){
+                viewModelScope.launch(Dispatchers.Main) {
+                    onSuccess()
+                }
+            }
+        }
+    }
+
+    fun readAllNotes() = REPOSITORY.readAll
 }
 
 class MainViewModelFactory(private val application: Application): ViewModelProvider.Factory {
