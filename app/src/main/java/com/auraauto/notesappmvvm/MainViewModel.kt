@@ -3,6 +3,7 @@ package com.auraauto.notesappmvvm
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.*
+import com.auraauto.notesappmvvm.database.firebase.AppFirebaseRepository
 import com.auraauto.notesappmvvm.database.room.dao.AppRoomDatabase
 import com.auraauto.notesappmvvm.database.room.dao.repository.RoomRepository
 import com.auraauto.notesappmvvm.model.Note
@@ -23,6 +24,13 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
                 val dao = AppRoomDatabase.getInstance(context = context).getRoomDao()
                 REPOSITORY = RoomRepository(dao)
                 onSuccess()
+            }
+            TYPE_FIREBASE -> {
+                REPOSITORY = AppFirebaseRepository()
+                REPOSITORY.connectToDatabase(
+                    { onSuccess() },
+                    { Log.d("checkData", "Error: ${it}") }
+                )
             }
         }
     }
