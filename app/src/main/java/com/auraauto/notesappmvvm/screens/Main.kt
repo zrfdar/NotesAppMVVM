@@ -28,6 +28,10 @@ import com.auraauto.notesappmvvm.MainViewModelFactory
 import com.auraauto.notesappmvvm.model.Note
 import com.auraauto.notesappmvvm.navigation.NavRoute
 import com.auraauto.notesappmvvm.ui.theme.NotesAppMVVMTheme
+import com.auraauto.notesappmvvm.utils.Constants
+import com.auraauto.notesappmvvm.utils.DB_TYPE
+import com.auraauto.notesappmvvm.utils.TYPE_FIREBASE
+import com.auraauto.notesappmvvm.utils.TYPE_ROOM
 
 @Composable
 fun MainScreen(navController: NavHostController, viewModel: MainViewModel) {
@@ -49,10 +53,15 @@ fun MainScreen(navController: NavHostController, viewModel: MainViewModel) {
 
 @Composable
 fun NoteItem(note: Note, navController: NavHostController){
+    val noteId = when(DB_TYPE) {
+        TYPE_FIREBASE -> note.firebaseId
+        TYPE_ROOM -> note.id
+        else -> Constants.Keys.EMPTY
+    }
     Card(modifier = Modifier
         .fillMaxWidth()
         .padding(vertical = 8.dp, horizontal = 24.dp)
-        .clickable { navController.navigate(NavRoute.Note.route + "/${note.id}") },
+        .clickable { navController.navigate(NavRoute.Note.route + "/${noteId}") },
         elevation = 6.dp
     ) {
         Column(modifier = Modifier.padding(vertical = 8.dp),

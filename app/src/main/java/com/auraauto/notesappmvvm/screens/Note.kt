@@ -24,13 +24,24 @@ import com.auraauto.notesappmvvm.ui.theme.NotesAppMVVMTheme
 import com.auraauto.notesappmvvm.utils.Constants
 import com.auraauto.notesappmvvm.utils.Constants.Keys.SUBTITLE
 import com.auraauto.notesappmvvm.utils.Constants.Keys.TITLE
+import com.auraauto.notesappmvvm.utils.DB_TYPE
+import com.auraauto.notesappmvvm.utils.TYPE_FIREBASE
+import com.auraauto.notesappmvvm.utils.TYPE_ROOM
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun NoteScreen(navController: NavHostController, viewModel: MainViewModel, noteId: String?) {
     val notes = viewModel.readAllNotes().observeAsState(listOf()).value
-    val note = notes.firstOrNull{ it.id == noteId?.toInt() } ?: Note(title = Constants.Keys.NONE, subtitle = Constants.Keys.NONE)
+    val note = when(DB_TYPE){
+        TYPE_ROOM -> {
+            notes.firstOrNull{ it.id == noteId?.toInt() } ?: Note()
+        }
+        TYPE_FIREBASE -> {
+            notes.firstOrNull { it.firebaseId == noteId } ?: Note()
+        }
+        else -> Note()
+    }
     val bottomSheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
     val coroutineScope = rememberCoroutineScope()
     var title by remember { mutableStateOf(Constants.Keys.EMPTY) }
@@ -71,7 +82,8 @@ fun NoteScreen(navController: NavHostController, viewModel: MainViewModel, noteI
                             viewModel.updateNote(note = Note(
                                 id = note.id,
                                 title = title,
-                                subtitle = subtitle)
+                                subtitle = subtitle,
+                                firebaseId = note.firebaseId)
                             ){
                                 navController.navigate(NavRoute.Main.route)
                             }
