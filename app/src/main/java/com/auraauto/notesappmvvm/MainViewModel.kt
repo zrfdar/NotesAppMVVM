@@ -7,6 +7,8 @@ import com.auraauto.notesappmvvm.database.firebase.AppFirebaseRepository
 import com.auraauto.notesappmvvm.database.room.dao.AppRoomDatabase
 import com.auraauto.notesappmvvm.database.room.dao.repository.RoomRepository
 import com.auraauto.notesappmvvm.model.Note
+import com.auraauto.notesappmvvm.utils.Constants.Keys.EMPTY
+import com.auraauto.notesappmvvm.utils.DB_TYPE
 import com.auraauto.notesappmvvm.utils.REPOSITORY
 import com.auraauto.notesappmvvm.utils.TYPE_FIREBASE
 import com.auraauto.notesappmvvm.utils.TYPE_ROOM
@@ -65,6 +67,18 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
     }
 
     fun readAllNotes() = REPOSITORY.readAll
+
+    fun signOut(onSuccess: () -> Unit) {
+        when(DB_TYPE.value) {
+            TYPE_FIREBASE,
+            TYPE_ROOM -> {
+                REPOSITORY.signOut()
+                DB_TYPE.value = EMPTY
+                onSuccess()
+            }
+            else -> { Log.d("checkData", "signOut: ELSE: ${DB_TYPE.value}") }
+        }
+    }
 }
 
 class MainViewModelFactory(private val application: Application): ViewModelProvider.Factory {
